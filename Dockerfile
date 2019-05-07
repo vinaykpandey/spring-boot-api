@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=launcher.gcr.io/google/openjdk8
+ARG BASE_IMAGE=launcher.gcr.io/google/openjdk11
 FROM ${BASE_IMAGE}
 COPY target/gs-spring-boot-0.1.0.jar /app.jar
 EXPOSE 8080/tcp

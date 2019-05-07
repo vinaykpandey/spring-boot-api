@@ -1,5 +1,4 @@
 # gcloud builds submit . --config=cloudbuild.yaml
-
 steps:
 - name: 'gcr.io/cloud-builders/mvn'
   args: ['install']
