@@ -7,6 +7,6 @@ steps:
   args: ['run', 'test:unit']
   
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=gcr.io/adroit-terminus-239208/spring-boot', '.']
+  args: ['build', '-t', gcr.io/adroit-terminus-239208/spring-boot', '.']
 
 images: ['gcr.io/adroit-terminus-239208/spring-boot']
