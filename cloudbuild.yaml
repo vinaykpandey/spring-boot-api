@@ -1,61 +1,51 @@
-# gcloud builds submit . --config=cloudbuild.yaml
-steps:
-- name: 'gcr.io/cloud-builders/mvn'
-  args: ['install']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=gcr.io/$PROJECT_ID/spring-boot', '.']
-images: ['gcr.io/$PROJECT_ID/spring-boot']
-
-
-# steps:
-# - name: 'gcr.io/cloud-builders/mvn'
-#   args: ['install']
-
-# - name: 'gcr.io/cloud-builders/mvn'
-#   args: ['run', 'test:unit']
-  
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: ['build', '-t', gcr.io/adroit-terminus-239208/spring-boot', '.']
-
-# images: ['gcr.io/adroit-terminus-239208/spring-boot']
-
 # In this directory, run the following command to build this builder.
-# $ gcloud builds submit . --config=cloudbuild.yaml
-#
-# TODO(franklinn): Stop tagging java/javac images once usage has dropped off.
+# $ gcloud builds submit
 
-# steps:
-# - name: 'gcr.io/cloud-builders/docker'
-#   args:
-#   - 'build'
-#   - '--no-cache'
-#   - '--build-arg=BASE_IMAGEs=launcher.gcr.io/google/openjdk8'
-#   - '--build-arg=DOCKER_VERSION=5:18.09.0~3-0~debian-stretch'
-#   - '--tag=gcr.io/adroit-terminus-239208/javac:8'
-#   - '--tag=gcr.io/adroit-terminus-239208/javac'
-#   - '--tag=gcr.io/adroit-terminus-239208/java/javac:8'
-#   - '--tag=gcr.io/adroit-terminus-239208/java/javac'
-#   - '.'
-#   waitFor: ['-']
-#   id: 'BUILD_JDK_8'
+steps:
+# Build old tagged images.
+# TODO(jasonhall): Deprecate and stop building these tagged images. Users
+# should use the official maven image directly.
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--build-arg=MAVEN_VERSION=3.3.9-jdk-8'
+  - '--tag=gcr.io/$PROJECT_ID/mvn:3.3.9-jdk-8'
+  - '.'
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--build-arg=MAVEN_VERSION=3.5.0-jdk-8'
+  - '--tag=gcr.io/$PROJECT_ID/mvn:3.5.0-jdk-8'
+  - '.'
 
-# # Test that javac and docker are installed, for all built images, and that apt-get update will work
-# # in child images
+# Build the latest version.
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--tag=gcr.io/$PROJECT_ID/mvn'
+  - '.'
 
-# - name: 'gcr.io/adroit-terminus-239208/javac:8'
-#   args: ['-version']
-#   waitFor: ['BUILD_JDK_8']
-# - name: 'gcr.io/adroit-terminus-239208/javac:8'
-#   entrypoint: 'docker'
-#   args: ['version']
-#   waitFor: ['BUILD_JDK_8']
-# - name: 'gcr.io/adroit-terminus-239208/javac:8'
-#   entrypoint: 'apt-get'
-#   args: ['update']
-#   waitFor: ['BUILD_JDK_8']
+# Minimally invoke Maven.
+- name: 'gcr.io/$PROJECT_ID/mvn'
+  args: ['--version']
 
-# images:
-# - 'gcr.io/adroit-terminus-239208/javac:8'
-# - 'gcr.io/adroit-terminus-239208/javac'
-# - 'gcr.io/adroit-terminus-239208/java/javac:8'
-# - 'gcr.io/adroit-terminus-239208/java/javac'
+# Run example builds.
+- name: 'gcr.io/$PROJECT_ID/mvn:3.3.9-jdk-8'
+  args: ['install']
+  dir: 'examples/spring_boot'
+- name: 'gcr.io/$PROJECT_ID/mvn:3.5.0-jdk-8'
+  args: ['install']
+  dir: 'examples/spring_boot'
+- name: 'gcr.io/$PROJECT_ID/mvn'
+  args: ['install']
+  dir: 'examples/spring_boot'
+
+# Demonstrate using the maven image directly.
+- name: 'maven'
+  args: ['mvn', 'install']
+  dir: 'examples/spring_boot'
+
+images:
+- 'gcr.io/$PROJECT_ID/mvn:3.3.9-jdk-8'
+- 'gcr.io/$PROJECT_ID/mvn:3.5.0-jdk-8'
+- 'gcr.io/$PROJECT_ID/mvn'
