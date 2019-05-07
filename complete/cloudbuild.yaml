@@ -1,12 +1,53 @@
 #gcloud builds submit . --config=cloudbuild.yaml
-steps:
-- name: 'gcr.io/cloud-builders/mvn'
-  args: ['install']
+# steps:
+# - name: 'gcr.io/cloud-builders/mvn'
+#   args: ['install']
 
-- name: 'gcr.io/cloud-builders/mvn'
-  args: ['run', 'test:unit']
+# - name: 'gcr.io/cloud-builders/mvn'
+#   args: ['run', 'test:unit']
   
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', gcr.io/adroit-terminus-239208/spring-boot', '.']
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['build', '-t', gcr.io/adroit-terminus-239208/spring-boot', '.']
 
-images: ['gcr.io/adroit-terminus-239208/spring-boot']
+# images: ['gcr.io/adroit-terminus-239208/spring-boot']
+
+# In this directory, run the following command to build this builder.
+# $ gcloud builds submit . --config=cloudbuild.yaml
+#
+# TODO(franklinn): Stop tagging java/javac images once usage has dropped off.
+
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--no-cache'
+  - '--build-arg=BASE_IMAGE=launcher.gcr.io/google/openjdk8'
+  - '--build-arg=DOCKER_VERSION=5:18.09.0~3-0~debian-stretch'
+  - '--tag=gcr.io/adroit-terminus-239208/javac:8'
+  - '--tag=gcr.io/adroit-terminus-239208/javac'
+  - '--tag=gcr.io/adroit-terminus-239208/java/javac:8'
+  - '--tag=gcr.io/adroit-terminus-239208/java/javac'
+  - '.'
+  waitFor: ['-']
+  id: 'BUILD_JDK_8'
+
+# Test that javac and docker are installed, for all built images, and that apt-get update will work
+# in child images
+
+- name: 'gcr.io/adroit-terminus-239208/javac:8'
+  args: ['-version']
+  waitFor: ['BUILD_JDK_8']
+- name: 'gcr.io/adroit-terminus-239208/javac:8'
+  entrypoint: 'docker'
+  args: ['version']
+  waitFor: ['BUILD_JDK_8']
+- name: 'gcr.io/adroit-terminus-239208/javac:8'
+  entrypoint: 'apt-get'
+  args: ['update']
+  waitFor: ['BUILD_JDK_8']
+
+images:
+- 'gcr.io/adroit-terminus-239208/javac:8'
+- 'gcr.io/adroit-terminus-239208/javac'
+- 'gcr.io/adroit-terminus-239208/java/javac:8'
+- 'gcr.io/adroit-terminus-239208/java/javac'
