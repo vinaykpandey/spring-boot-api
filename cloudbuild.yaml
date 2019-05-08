@@ -6,20 +6,23 @@ steps:
 
 - name: 'gcr.io/cloud-builders/mvn'
   args: ['install']
-
+  allow_failure: true
 
 # - name: 'gcr.io/cloud-builders/mvn'
 #   args: ['test']
 
 - name: 'gcr.io/cloud-builders/mvn'
   args: ['package']
+   allow_failure: true
 
 
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/adroit-terminus-239208/springboot_auto', '.' ]
+  allow_failure: true
 
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/adroit-terminus-239208/springboot_auto']
+   allow_failure: true
 
 images:
 - 'gcr.io/adroit-terminus-239208/springboot_auto'
