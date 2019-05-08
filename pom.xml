@@ -61,7 +61,18 @@
                 </configuration>
             </plugin>
 
-            <!-- <plugin>
+            <plugin>
+               <groupId>com.google.cloud.tools</groupId>
+               <artifactId>jib-maven-plugin</artifactId>
+               <version>0.9.6</version>
+               <configuration>
+                  <to>
+                     <image>spring-jib</image>
+                  </to>
+               </configuration>
+            </plugin>
+
+            <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
@@ -72,7 +83,7 @@
                     </execution>
                 </executions>
             </plugin>
- -->
+
         </plugins>
     </build>
 

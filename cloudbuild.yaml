@@ -4,8 +4,8 @@ steps:
 # - name: 'gcr.io/cloud-builders/mvn'
 #   args: ['run', 'test:unit']
 
-- name: 'gcr.io/cloud-builders/mvn'
-  args: ['install']
+# - name: 'gcr.io/cloud-builders/mvn'
+#   args: ['install']
   # allow_failure: true
 
 # - name: 'gcr.io/cloud-builders/mvn'
@@ -18,11 +18,11 @@ steps:
 
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/adroit-terminus-239208/springboot_auto', '.' ]
+  args: [ 'build', '-t', 'gcr.io/adroit-terminus-239208/springboot_auto:v2', '.' ]
   # allow_failure: true
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/adroit-terminus-239208/springboot_auto']
+  args: ['push', 'gcr.io/adroit-terminus-239208/springboot_auto:v2']
   # allow_failure: true
 
 # - name: 'gcr.io/cloud-builders/kubectl'
@@ -37,6 +37,6 @@ steps:
 
 
 images:
-- 'gcr.io/adroit-terminus-239208/springboot_auto'
+- 'gcr.io/adroit-terminus-239208/springboot_auto:v2'
 
 
