@@ -25,5 +25,18 @@ steps:
   args: ['push', 'gcr.io/adroit-terminus-239208/springboot_auto']
   # allow_failure: true
 
+# - name: 'gcr.io/cloud-builders/kubectl'
+#   args:
+#   - 'set'
+#   - 'image'
+#   - 'deployment/hello-java'
+#   - 'my-container=gcr.io/adroit-terminus-239208/springboot_auto:latest'
+#   env:
+#   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+#   - 'CLOUDSDK_CONTAINER_CLUSTER=standard-cluster-1'
+
+
 images:
 - 'gcr.io/adroit-terminus-239208/springboot_auto'
+
+
