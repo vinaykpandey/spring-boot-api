@@ -1,3 +1,5 @@
+#gcloud builds submit --config cloudbuild.yaml .
+
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/adroit-terminus-239208/springboot_auto', '.' ]
