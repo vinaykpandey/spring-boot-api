@@ -1,7 +1,14 @@
 #gcloud builds submit --config cloudbuild.yaml .
 
 steps:
+# - name: 'gcr.io/cloud-builders/mvn'
+#   args: ['run', 'test:unit']
+
+- name: 'gcr.io/cloud-builders/mvn'
+  args: ['install']
+  
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/adroit-terminus-239208/springboot_auto', '.' ]
+
 images:
 - 'gcr.io/adroit-terminus-239208/springboot_auto'
