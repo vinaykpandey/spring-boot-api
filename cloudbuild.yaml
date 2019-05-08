@@ -18,11 +18,11 @@ steps:
 
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/adroit-terminus-239208/springboot_auto:v4', '.' ]
+  args: [ 'build', '-t', 'gcr.io/adroit-terminus-239208/springboot_auto:v5', '.' ]
   # allow_failure: true
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/adroit-terminus-239208/springboot_auto:v4']
+  args: ['push', 'gcr.io/adroit-terminus-239208/springboot_auto:v5']
   # allow_failure: true
 
 # - name: 'gcr.io/cloud-builders/kubectl'
@@ -37,6 +37,6 @@ steps:
 
 
 images:
-- 'gcr.io/adroit-terminus-239208/springboot_auto:v4'
+- 'gcr.io/adroit-terminus-239208/springboot_auto:v5'
 
 
