@@ -8,7 +8,7 @@ public class HelloController {
     
     @RequestMapping("/")
     public String index() {
-        return "This is auto clud build, Greetings from Spring Boot, Hey run this in GKE !! ";
+        return "GKE, Cloud Build, Spring Boot !!! Vinay !!";
     }
     
 }
