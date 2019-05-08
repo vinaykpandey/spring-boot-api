@@ -8,7 +8,7 @@ public class HelloController {
     
     @RequestMapping("/")
     public String index() {
-        return "V.22222222222222222222222222222222222222222222222222222222222222222222222222222222222";
+        return "V.3.0, Auto Build, Need to Deploy New Image using Kubectl set Image !! GKE ";
     }
     
 }
